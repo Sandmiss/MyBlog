@@ -1,44 +1,488 @@
-{% extends '_partials/layout.njk' %}
-{% import '_macro/sidebar.njk' as sidebar with context %}
-{% import '_macro/comment.njk' as comment with context %}
-{% import '_macro/postmeta.njk' as postmeta with context %}
 
-{% block title %}
-{%- set page_title = page.title %}
-{%- if page.categories and page.categories.length %}
-  {%- set cat_list = '' %}
-  {%- set comma = '' %}
-  {%- for cat in page.categories.toArray() %}
-    {%- set cat_list = cat.name + comma + cat_list%}
-    {%- set comma = ' - ' %}
-  {%- endfor %}
-  {%- set page_title = page_title + ' - ' + cat_list %}
-{%- endif %}
-{{ page_title }} |
-{% endblock %}
 
-{% block header %}
-  <h1 itemprop="name headline">
-    {%- if page.link %}
-      {%- set postTitleIcon = '<i class="ic i-link-alt"></i>' %}
-      {%- set postText = page.title or page.link %}
-      {{ _url(page.link, postText + postTitleIcon, {class: 'link external', itemprop: 'url'}) }}
-    {%- else %}
-      {{- page.title }}
-    {%- endif %}
-  </h1>
-  {{postmeta.render(page, true)}}
-{% endblock %}
 
-{% block content %}
-  <div class="article wrap">
-    {{ breadcrumb.render(page, true) }}
-    {{ partial('_partials/post/post.njk', {post: page}) }}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="MYBLOG" href="http://blog.test.com/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="MYBLOG" href="http://blog.test.com/atom.xml" />
+<link rel="alternate" type="application/json" title="MYBLOG" href="http://blog.test.com/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="js, vue, react" />
+
+
+<link rel="canonical" href="http://blog.test.com/2020/04/15/laravel%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE/">
+
+
+
+  <title>
+laravel搭建项目 |
+Yume Shoka = MYBLOG = murphy</title>
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
   </div>
-  {{ partial('_partials/post/nav.njk', {post: page}) }}
-  {{ comment.render() }}
-{% endblock %}
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">laravel搭建项目
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-04-15 09:47:36">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-04-15T09:47:36+08:00">2020-04-15</time>
+  </span>
+</div>
 
-{% block sidebar %}
-{{ sidebar.render(true) }}
-{% endblock %}
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph4fomxoj20zk0m8axp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljgocqbj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclip4jbpj20zk0m87cv.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeubcbajj20zk0m8h1h.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipexe4oykj20zk0m87ji.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhfehz7j20zk0m8u0x.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.test.com/2020/04/15/laravel%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="Murphy">
+    <meta itemprop="description" content="murphy, Murphy's personal blog">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="MYBLOG">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h2 id="用-composer-新建项目"><a class="anchor" href="#用-composer-新建项目">#</a> 用 composer 新建项目</h2>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">composer</span> create-project --prefer-dist laravel/laravel laravel1 <span class="token string">"6.*"</span></pre></td></tr></table></figure><p>项目名为 laravel1, laravel 版本为 6.0 以上</p>
+<h2 id="使用-docker-将项目部署到服务器"><a class="anchor" href="#使用-docker-将项目部署到服务器">#</a> 使用 Docker 将项目部署到服务器</h2>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token builtin class-name">cd</span> code/Laradock</pre></td></tr><tr><td data-num="2"></td><td><pre>  <span class="token function">dc</span> <span class="token builtin class-name">exec</span> workspace <span class="token function">bash</span></pre></td></tr><tr><td data-num="3"></td><td><pre>  <span class="token builtin class-name">cd</span> laravel1</pre></td></tr></table></figure><figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token builtin class-name">cd</span> code/laravel1</pre></td></tr><tr><td data-num="2"></td><td><pre>  php artisan server</pre></td></tr></table></figure><p>默认访问路径<br />
+<span class="exturl" data-url="aHR0cDovLzEyNy4wLjAuMTo4MDAw"> http://127.0.0.1:8000</span></p>
+<h2 id="创建并-数据库"><a class="anchor" href="#创建并-数据库">#</a> 创建并 🔗 数据库</h2>
+<ol>
+<li>使用 Sequel Pro 连接操作数据库</li>
+<li>创建数据库<br />
+ Add Database</li>
+<li>配置 .env 文件数据库信息，修改为项目的数据库信息</li>
+</ol>
+<figure class="highlight js"><figcaption data-lang="JavaScript"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token constant">DB_DATABASE</span> <span class="token operator">=</span> laravel1<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token constant">DB_HOST</span> <span class="token operator">=</span> mysql<span class="token punctuation">;</span> <span class="token comment">// Docker 下的 HOST 要改为 mysql</span></pre></td></tr></table></figure><ol start="4">
+<li>创建 migrations</li>
+</ol>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre>php artisan migrate</pre></td></tr></table></figure><h2 id="搭建小程序项目"><a class="anchor" href="#搭建小程序项目">#</a> 搭建小程序项目</h2>
+<ol>
+<li>添加微信开放字段<br />
+修改 database/migrations 下的 * user_table.php 文件</li>
+</ol>
+<figure class="highlight php"><figcaption data-lang="PHP"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">up</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre></td></tr><tr><td data-num="2"></td><td><pre>    <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="3"></td><td><pre>        Schema<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'users'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>Blueprint <span class="token variable">$table</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'weapp_openid'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'微信开放id'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="5"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'weapp_session_key'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'微信session_key'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="6"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'nickname'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'昵称'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="7"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'weapp_avatar'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'微信头像'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="8"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'country'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'国家'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="9"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'province'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'省份'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="10"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'city'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'所在城市'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="11"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'language'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'语言'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="12"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">json</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'location'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'当前地理信息'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="13"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">enum</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'gender'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token single-quoted-string string">'1'</span><span class="token punctuation">,</span> <span class="token single-quoted-string string">'2'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token keyword">default</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'1'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'性别默认男'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="14"></td><td><pre>            <span class="token variable">$table</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">string</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'phone'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">unique</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="15"></td><td><pre>        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="16"></td><td><pre>    <span class="token punctuation">&#125;</span></pre></td></tr></table></figure><ol start="2">
+<li>config/app.php 修改时区、语言</li>
+</ol>
+<figure class="highlight php"><figcaption data-lang="PHP"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token single-quoted-string string">'timezone'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'Asia/Shanghai'</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token single-quoted-string string">'locale'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'zh-CN'</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token single-quoted-string string">'fallback_locale'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'zh-CN'</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="4"></td><td><pre><span class="token single-quoted-string string">'faker_locale'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'zh-CN'</span><span class="token punctuation">,</span></pre></td></tr></table></figure><ol start="3">
+<li>composer.json 导入拓展</li>
+</ol>
+<figure class="highlight php"><figcaption data-lang="PHP"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token double-quoted-string string">"fideloper/proxy"</span><span class="token punctuation">:</span> <span class="token double-quoted-string string">"^4.0"</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token double-quoted-string string">"laravel/passport"</span><span class="token punctuation">:</span> <span class="token double-quoted-string string">"^7.2"</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token double-quoted-string string">"laravel/tinker"</span><span class="token punctuation">:</span> <span class="token double-quoted-string string">"^2.0"</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="4"></td><td><pre><span class="token double-quoted-string string">"overtrue/laravel-wechat"</span><span class="token punctuation">:</span> <span class="token double-quoted-string string">"~5.0"</span></pre></td></tr></table></figure><ol start="4">
+<li>执行命令</li>
+</ol>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token function">composer</span> update</pre></td></tr></table></figure><ol start="5">
+<li>
+<p>配置 .env 文件<br />
+ WECHAT_MINI_PROGRAM_APPID = 小程序 APPID<br />
+WECHAT_MINI_PROGRAM_SECRET = 小程序 SECRET</p>
+</li>
+<li>
+<p>执行命令生产 7 张表</p>
+</li>
+</ol>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre>php artisan migrate</pre></td></tr></table></figure><ol start="7">
+<li>安装 Passport (Api 认证)</li>
+</ol>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre>php artisan passport:install</pre></td></tr></table></figure><p>修改 config/auth.php，API 的 dirver 改成 passport</p>
+<figure class="highlight php"><figcaption data-lang="PHP"></figcaption><table><tr><td data-num="1"></td><td><pre><span class="token single-quoted-string string">'api'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span></pre></td></tr><tr><td data-num="2"></td><td><pre>    <span class="token single-quoted-string string">'driver'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'passport'</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="3"></td><td><pre>    <span class="token single-quoted-string string">'provider'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'users'</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="4"></td><td><pre>    <span class="token single-quoted-string string">'hash'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token boolean constant">false</span><span class="token punctuation">,</span></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token punctuation">]</span><span class="token punctuation">,</span></pre></td></tr></table></figure><p>修改 api.php</p>
+<figure class="highlight php"><figcaption data-lang="PHP"></figcaption><table><tr><td data-num="1"></td><td><pre>Route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">group</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token single-quoted-string string">'prefix'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token single-quoted-string string">'/v1'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="2"></td><td><pre>    Route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token single-quoted-string string">'/user/login'</span><span class="token punctuation">,</span> <span class="token single-quoted-string string">'UserController@wxLogin'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr></table></figure><ol start="8">
+<li>命令创建控制器 (docker 中)</li>
+</ol>
+<figure class="highlight bash"><figcaption data-lang="bash"></figcaption><table><tr><td data-num="1"></td><td><pre>php artisan make:controller User/UserController</pre></td></tr></table></figure>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2020-11-12 14:26:18" itemprop="dateModified" datetime="2020-11-12T14:26:18+08:00">2020-11-12</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="Murphy 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="Murphy 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="Murphy 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Murphy <i class="ic i-at"><em>@</em></i>MYBLOG
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.test.com/2020/04/15/laravel%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE/" title="laravel搭建项目">http://blog.test.com/2020/04/15/laravel搭建项目/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2020/04/09/hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipev1x5e4j20zk0m8b29.jpg" title="hexo搭建个人博客">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>hexo搭建个人博客</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2020/04/28/mac%E8%A7%A3%E5%86%B3%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEgithub-io/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclil3m4ej20zk0m8tn8.jpg" title="mac解决无法访问github.io">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>mac解决无法访问github.io</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用-composer-新建项目"><span class="toc-number">1.</span> <span class="toc-text"> 用 composer 新建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-docker-将项目部署到服务器"><span class="toc-number">2.</span> <span class="toc-text"> 使用 Docker 将项目部署到服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建并-数据库"><span class="toc-number">3.</span> <span class="toc-text"> 创建并 🔗 数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建小程序项目"><span class="toc-number">4.</span> <span class="toc-text"> 搭建小程序项目</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Murphy"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">Murphy</p>
+  <div class="description" itemprop="description">Murphy's personal blog</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">6</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">1</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL3lvdXJuYW1l" title="https:&#x2F;&#x2F;github.com&#x2F;yourname"><i class="ic i-github"></i></span>
+      <span class="exturl item twitter" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS95b3VybmFtZQ==" title="https:&#x2F;&#x2F;twitter.com&#x2F;yourname"><i class="ic i-twitter"></i></span>
+      <span class="exturl item zhihu" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS95b3VybmFtZQ==" title="https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yourname"><i class="ic i-zhihu"></i></span>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPXlvdXJpZA==" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;yourid"><i class="ic i-cloud-music"></i></span>
+      <span class="exturl item weibo" data-url="aHR0cHM6Ly93ZWliby5jb20veW91cm5hbWU=" title="https:&#x2F;&#x2F;weibo.com&#x2F;yourname"><i class="ic i-weibo"></i></span>
+      <span class="exturl item about" data-url="aHR0cHM6Ly9hYm91dC5tZS95b3VybmFtZQ==" title="https:&#x2F;&#x2F;about.me&#x2F;yourname"><i class="ic i-address-card"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2020/04/09/hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2020/04/28/mac%E8%A7%A3%E5%86%B3%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEgithub-io/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/04/09/hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="hexo搭建个人博客">hexo搭建个人博客</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/11/10/vue-%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" title="vue 个人博客综合项目">vue 个人博客综合项目</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/05/30/get%E4%B8%8Epost%E7%9A%84%E5%8C%BA%E5%88%AB/" title="get与post的区别">get与post的区别</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/08/13/mobile-skypulse%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/" title="mobile_skypulse开发文档">mobile_skypulse开发文档</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/04/28/mac%E8%A7%A3%E5%86%B3%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEgithub-io/" title="mac解决无法访问github.io">mac解决无法访问github.io</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/04/15/laravel%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE/" title="laravel搭建项目">laravel搭建项目</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2020</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Murphy @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2020/04/15/laravel搭建项目/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
